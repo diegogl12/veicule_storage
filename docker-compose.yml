@@ -1,44 +1,36 @@
 services:
-  localstack:
-    image: localstack/localstack
-    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
-    hostname: localstack
+  database:
+    image: postgres:15
+    container_name: veicule_storage_database
     environment:
-      - SERVICES=sqs
-      - HOSTNAME_EXTERNAL=localstack
-    env_file:
-      - .env
+      - POSTGRES_PASSWORD=postgres
     ports:
-      - "127.0.0.1:4566:4566"
-      - "127.0.0.1:4510-4559:4510-4559"
-    volumes:
-      - "./localstack-setup.sh:/etc/localstack/init/ready.d/init-aws.sh"
-      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
-      interval: 5s
-      timeout: 3s
-      retries: 3
+      - "5432:5432"
     networks:
-      - food-order-network
+      - veicule-storage-network
 
-  food_order_pagamento:
-    container_name: food_order_pagamento
+  veicule_storage:
+    container_name: veicule_storage
     env_file:
       - .env
+    environment:
+      - VEICULE_STORAGE_HOSTNAME=veicule_storage_database
     build:
       context: .
       dockerfile: ./Dockerfile
     ports:
       - "4000:4000"
+    command: sh -c "mix ecto.create && mix ecto.migrate && mix run --no-halt"
     depends_on:
-      localstack:
-        condition: service_healthy
+      database:
+        condition: service_started
     networks:
-      - food-order-network
+      veicule-storage-network:
+        aliases:
+          - veicule_storage
+    dns_search: .
 
 networks:
-  food-order-network:
-    name: food-order-network
+  veicule-storage-network:
+    name: veicule-storage-network
     driver: bridge

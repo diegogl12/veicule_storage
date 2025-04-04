@@ -1,21 +1,20 @@
-defmodule FoodOrderPagamento.Application do
-
+defmodule VeiculeStorage.Application do
   use Application
   require Logger
 
   def start(_type, _args) do
-    children = [
-      {Plug.Cowboy, scheme: :http, plug: Endpoints, options: [port: port()]},
-      {FoodOrderPagamento.Broadway, []}
-    ]
-
-    opts = [strategy: :one_for_one, name: FoodOrderPagamento.Supervisor]
+    opts = [strategy: :one_for_one, name: VeiculeStorage.Supervisor]
 
     Logger.info("The server has started at port #{port()}...")
 
-    Supervisor.start_link(children, opts)
+    Supervisor.start_link(children(Mix.env()), opts)
   end
 
-  defp port, do: Application.get_env(:food_order_pagamento, :api) |> Keyword.get(:port)
-end
+  defp children(:test), do: []
+  defp children(_), do: [
+    VeiculeStorage.Infra.Repo.VeiculeStorageRepo,
+    {Plug.Cowboy, scheme: :http, plug: VeiculeStorage.Infra.Web.Endpoints, options: [port: port()]},
+  ]
 
+  defp port, do: Application.get_env(:veicule_storage, :api) |> Keyword.get(:port)
+end

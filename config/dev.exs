@@ -1,5 +1,10 @@
 import Config
 
-config :food_order_pagamento, :api,
-  port: 4000 
+config :veicule_storage, :api, port: System.get_env("VEICULE_STORAGE_ENDPOINT_PORT", "4000") |> String.to_integer()
 
+config :veicule_storage, VeiculeStorage.Infra.Repo.VeiculeStorageRepo,
+  database: System.get_env("VEICULE_STORAGE_DATABASE", "veicule_storage_db"),
+  username: System.get_env("VEICULE_STORAGE_USERNAME", "postgres"),
+  password: System.get_env("VEICULE_STORAGE_PASSWORD", "postgres"),
+  hostname: System.get_env("VEICULE_STORAGE_HOSTNAME", "postgres"),
+  migration_primary_key: [type: :uuid]

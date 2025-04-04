@@ -1,0 +1,33 @@
+defmodule VeiculeStorage.Infra.Web.Endpoints do
+  use Plug.Router
+  require Logger
+
+  alias VeiculeStorage.Infra.Web.Controllers.VeiculeController
+
+  plug(:match)
+
+  plug(Plug.Parsers, parsers: [:json], pass: ["application/json"], json_decoder: Jason)
+
+  plug(:dispatch)
+
+  get "/api/health" do
+    send_resp(conn, 200, "Hello... All good!")
+  end
+
+  post "/api/veicules" do
+    case VeiculeController.create_veicule(conn.body_params) do
+      {:ok, veicule} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(201, Jason.encode!(veicule))
+      {:error, error} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(400, Jason.encode!(%{message: "Error creating veicule: #{inspect(error)}"}))
+    end
+  end
+
+  match _ do
+    send_resp(conn, 404, "Page not found")
+  end
+end
