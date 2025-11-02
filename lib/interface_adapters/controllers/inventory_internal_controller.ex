@@ -1,0 +1,36 @@
+defmodule VeiculeStorage.InterfaceAdapters.Controllers.InventoryInternalController do
+  alias VeiculeStorage.InterfaceAdapters.Repositories.InventoryRepository
+  alias VeiculeStorage.InterfaceAdapters.DTOs.InventoryDTO
+  alias VeiculeStorage.InterfaceAdapters.Repositories.VeiculeRepository
+
+  def create(%InventoryDTO{} = dto) do
+    with {:ok, inventory_domain} <- InventoryDTO.to_domain(dto),
+         {:ok, _veicule} <- VeiculeRepository.get(inventory_domain.veicule_id),
+         {:ok, inventory} <- InventoryRepository.create(inventory_domain) do
+      {:ok, inventory}
+    else
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  def update(%InventoryDTO{} = dto) do
+    with {:ok, inventory_domain} <- InventoryDTO.to_domain(dto),
+         {:ok, _veicule} <- VeiculeRepository.get(inventory_domain.veicule_id),
+         {:ok, inventory} <- InventoryRepository.update(inventory_domain) do
+      {:ok, inventory}
+    else
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+
+  def get_all() do
+    with {:ok, inventory_list} <- InventoryRepository.get_all() do
+      {:ok, inventory_list}
+    else
+      {:error, error} ->
+        {:error, error}
+    end
+  end
+end

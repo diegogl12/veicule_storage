@@ -3,6 +3,7 @@ defmodule VeiculeStorage.Infra.Web.Endpoints do
   require Logger
 
   alias VeiculeStorage.Infra.Web.Controllers.VeiculeController
+  alias VeiculeStorage.Infra.Web.Controllers.InventoryController
 
   plug(:match)
 
@@ -37,6 +38,45 @@ defmodule VeiculeStorage.Infra.Web.Endpoints do
         conn
         |> put_resp_content_type("application/json")
         |> send_resp(400, Jason.encode!(%{message: "Error updating veicule: #{inspect(error)}"}))
+    end
+  end
+
+  post "api/inventories" do
+    case InventoryController.create_inventory(conn.body_params) do
+      {:ok, inventory} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(201, Jason.encode!(inventory))
+      {:error, error} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(400, Jason.encode!(%{message: "Error creating inventory: #{inspect(error)}"}))
+    end
+  end
+
+  put "/api/inventories/:id" do
+    case InventoryController.update_inventory(conn.body_params, conn.params["id"]) do
+      {:ok, inventory} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(200, Jason.encode!(inventory))
+      {:error, error} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(400, Jason.encode!(%{message: "Error updating inventory: #{inspect(error)}"}))
+    end
+  end
+
+  get "/api/inventories/all" do
+    case InventoryController.get_all_inventories() do
+      {:ok, inventories} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(200, Jason.encode!(inventories))
+      {:error, error} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(400, Jason.encode!(%{message: "Error getting inventories: #{inspect(error)}"}))
     end
   end
 

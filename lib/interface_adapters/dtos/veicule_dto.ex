@@ -42,5 +42,6 @@ defmodule VeiculeStorage.InterfaceAdapters.DTOs.VeiculeDTO do
 
   defp handle_value(value) when is_binary(value), do: value
   defp handle_value_to_integer(value) when is_binary(value), do: String.to_integer(value)
+  defp handle_value_to_integer(value) when is_integer(value), do: value
   defp handle_value(_), do: nil
 end
