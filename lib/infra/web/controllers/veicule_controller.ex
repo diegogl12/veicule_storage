@@ -24,4 +24,22 @@ defmodule VeiculeStorage.Infra.Web.Controllers.VeiculeController do
         {:error, error}
     end
   end
+
+  @doc """
+  Updates a veicule.
+
+  params:
+   - brand: string
+   - model: string
+   - year: integer
+   - color: string
+  """
+  def update_veicule(params, id) do
+    with {:ok, dto_with_id} <- Map.put(params, "id", id) |> VeiculeDTO.from_map(),
+         {:ok, updated_veicule} <- VeiculeInternalController.update(dto_with_id) do
+      {:ok, updated_veicule}
+    else
+      {:error, error} -> {:error, error}
+    end
+  end
 end

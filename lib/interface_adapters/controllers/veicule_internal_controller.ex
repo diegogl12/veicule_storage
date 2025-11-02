@@ -11,4 +11,13 @@ defmodule VeiculeStorage.InterfaceAdapters.Controllers.VeiculeInternalController
         {:error, error}
     end
   end
+
+  def update(%VeiculeDTO{} = dto) do
+    with {:ok, veicule_domain} <- VeiculeDTO.to_domain(dto),
+         {:ok, updated_veicule} <- VeiculeRepository.update(veicule_domain) do
+      {:ok, updated_veicule}
+    else
+      {:error, error} -> {:error, error}
+    end
+  end
 end

@@ -27,6 +27,19 @@ defmodule VeiculeStorage.Infra.Web.Endpoints do
     end
   end
 
+  put "/api/veicules/:id" do
+    case VeiculeController.update_veicule(conn.body_params, conn.params["id"]) do
+      {:ok, veicule} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(200, Jason.encode!(veicule))
+      {:error, error} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(400, Jason.encode!(%{message: "Error updating veicule: #{inspect(error)}"}))
+    end
+  end
+
   match _ do
     send_resp(conn, 404, "Page not found")
   end
