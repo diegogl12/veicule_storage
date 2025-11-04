@@ -16,12 +16,16 @@ defmodule VeiculeStorage.InterfaceAdapters.Repositories.VeiculeRepository do
 
   @impl true
   def create(%Veicule{} = veicule) do
-    %VeiculeSchema{
+    # Usar changeset no create para consistência e validações futuras
+    attrs = %{
       brand: veicule.brand,
       model: veicule.model,
       year: veicule.year,
       color: veicule.color
     }
+
+    %VeiculeSchema{}
+    |> VeiculeSchema.changeset(attrs)
     |> Repo.insert()
     |> case do
       {:ok, veicule_inserted} ->

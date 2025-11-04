@@ -4,6 +4,7 @@ defmodule VeiculeStorage.Infra.Web.Endpoints do
 
   alias VeiculeStorage.Infra.Web.Controllers.VeiculeController
   alias VeiculeStorage.Infra.Web.Controllers.InventoryController
+  alias VeiculeStorage.Infra.Web.Controllers.SaleController
 
   plug(:match)
 
@@ -77,6 +78,45 @@ defmodule VeiculeStorage.Infra.Web.Endpoints do
         conn
         |> put_resp_content_type("application/json")
         |> send_resp(400, Jason.encode!(%{message: "Error getting inventories: #{inspect(error)}"}))
+    end
+  end
+
+  post "/api/sales/sell" do
+    case SaleController.sell(conn.body_params) do
+      {:ok, sale} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(201, Jason.encode!(sale))
+      {:error, error} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(400, Jason.encode!(%{message: "Error selling: #{inspect(error)}"}))
+    end
+  end
+
+  get "/api/sales/all" do
+    case SaleController.get_sales() do
+      {:ok, sales} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(200, Jason.encode!(sales))
+      {:error, error} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(400, Jason.encode!(%{message: "Error getting sales: #{inspect(error)}"}))
+    end
+  end
+
+  put "/api/webhooks/sale-status-update" do
+    case SaleController.sale_status_update(conn.body_params) do
+      {:ok, sale} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(200, Jason.encode!(sale))
+      {:error, error} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(400, Jason.encode!(%{message: "Error updating sale status: #{inspect(error)}"}))
     end
   end
 

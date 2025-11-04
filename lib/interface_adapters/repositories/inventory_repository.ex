@@ -4,13 +4,19 @@ defmodule VeiculeStorage.InterfaceAdapters.Repositories.InventoryRepository do
   alias VeiculeStorage.Infra.Repo.VeiculeStorageRepo, as: Repo
   alias VeiculeStorage.InterfaceAdapters.Repositories.Schemas.InventorySchema
   alias VeiculeStorage.Domain.Entities.Inventory
+  require Logger
 
   @impl true
   def create(%Inventory{} = inventory) do
-    %InventorySchema{
+    # Usar changeset também no create para consistência
+    # Isso garante que validações futuras sejam aplicadas
+    attrs = %{
       veicule_id: inventory.veicule_id,
       price: inventory.price
     }
+
+    %InventorySchema{}
+    |> InventorySchema.changeset(attrs)
     |> Repo.insert()
     |> case do
       {:ok, inventory_inserted} ->
