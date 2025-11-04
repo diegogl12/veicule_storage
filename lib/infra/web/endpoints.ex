@@ -4,6 +4,8 @@ defmodule VeiculeStorage.Infra.Web.Endpoints do
   alias VeiculeStorage.Infra.Web.Controllers.InventoryController
   alias VeiculeStorage.Infra.Web.Controllers.SaleController
   alias VeiculeStorage.Infra.Web.Controllers.VeiculeController
+  alias VeiculeStorage.Infra.Web.Swagger
+  alias VeiculeStorage.Infra.Web.SwaggerUI
 
   require Logger
 
@@ -13,6 +15,19 @@ defmodule VeiculeStorage.Infra.Web.Endpoints do
 
   plug(:dispatch)
 
+  get "/api/docs" do
+    conn
+    |> put_resp_content_type("text/html")
+    |> send_resp(200, SwaggerUI.html())
+  end
+
+  get "/api/swagger.json" do
+    conn
+    |> put_resp_content_type("application/json")
+    |> send_resp(200, Jason.encode!(Swagger.spec()))
+  end
+
+  # Endpoint de health check para verificar se a API está funcionando.
   get "/api/health" do
     send_resp(conn, 200, "Hello... All good!")
   end
