@@ -1,4 +1,5 @@
 defmodule VeiculeStorage.InterfaceAdapters.DTOs.VeiculeDTO do
+  @derive {Jason.Encoder, only: [:id, :brand, :model, :year, :color]}
   alias VeiculeStorage.Domain.Entities.Veicule
 
   defstruct [:id, :brand, :model, :year, :color]
@@ -21,6 +22,18 @@ defmodule VeiculeStorage.InterfaceAdapters.DTOs.VeiculeDTO do
     })
   end
 
+  def from_domain(nil), do: nil
+  def from_domain(%Veicule{} = domain) do
+    %__MODULE__{
+      id: domain.id,
+      brand: domain.brand,
+      model: domain.model,
+      year: domain.year,
+      color: domain.color
+    }
+  end
+
+  def from_map(nil), do: {:ok, nil}
   def from_map(map) when is_map(map) do
     map_with_atoms =
       map

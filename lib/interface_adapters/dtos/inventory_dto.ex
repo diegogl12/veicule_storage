@@ -1,12 +1,15 @@
 defmodule VeiculeStorage.InterfaceAdapters.DTOs.InventoryDTO do
+  @derive {Jason.Encoder, only: [:id, :veicule_id, :price, :veicule]}
   alias VeiculeStorage.Domain.Entities.Inventory
+  alias VeiculeStorage.InterfaceAdapters.DTOs.VeiculeDTO
 
-  defstruct [:id, :veicule_id, :price]
+  defstruct [:id, :veicule_id, :price, :veicule]
 
   @type t :: %__MODULE__{
           id: String.t(),
           veicule_id: String.t(),
-          price: float()
+          price: float(),
+          veicule: VeiculeDTO.t() | nil
         }
 
   def to_domain(%__MODULE__{} = dto) do
@@ -15,6 +18,15 @@ defmodule VeiculeStorage.InterfaceAdapters.DTOs.InventoryDTO do
       veicule_id: dto.veicule_id,
       price: dto.price
     })
+  end
+
+  def from_domain(%Inventory{} = domain) do
+    %__MODULE__{
+      id: domain.id,
+      veicule_id: domain.veicule_id,
+      price: domain.price,
+      veicule: VeiculeDTO.from_domain(domain.veicule)
+    }
   end
 
   def from_map(map) when is_map(map) do
@@ -28,7 +40,8 @@ defmodule VeiculeStorage.InterfaceAdapters.DTOs.InventoryDTO do
     dto = %__MODULE__{
       id: map_with_atoms |> Map.get(:id) |> handle_value(),
       veicule_id: map_with_atoms |> Map.get(:veicule_id) |> handle_value(),
-      price: map_with_atoms |> Map.get(:price) |> handle_value_to_float()
+      price: map_with_atoms |> Map.get(:price) |> handle_value_to_float(),
+      veicule: map_with_atoms |> Map.get(:veicule) |> VeiculeDTO.from_map()
     }
 
     {:ok, dto}

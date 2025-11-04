@@ -32,4 +32,20 @@ defmodule VeiculeStorage.Infra.Web.Controllers.InventoryController do
       {:error, error} -> {:error, error}
     end
   end
+
+  def get_all_to_sell() do
+    with {:ok, inventories} <- InventoryInternalController.get_all_to_sell() do
+      {:ok, inventories}
+    else
+      {:error, error} -> {:error, error}
+    end
+  end
+
+  def get_all_sold() do
+    with {:ok, inventories} <- InventoryInternalController.get_all_sold() do
+      {:ok, inventories}
+    else
+      {:error, error} -> {:error, error}
+    end
+  end
 end

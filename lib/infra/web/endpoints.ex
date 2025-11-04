@@ -120,6 +120,32 @@ defmodule VeiculeStorage.Infra.Web.Endpoints do
     end
   end
 
+  get "/api/inventories/to-sell" do
+    case InventoryController.get_all_to_sell() do
+      {:ok, inventories} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(200, Jason.encode!(inventories))
+      {:error, error} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(400, Jason.encode!(%{message: "Error getting inventories to sell: #{inspect(error)}"}))
+    end
+  end
+
+  get "/api/inventories/sold" do
+    case InventoryController.get_all_sold() do
+      {:ok, inventories} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(200, Jason.encode!(inventories))
+      {:error, error} ->
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(400, Jason.encode!(%{message: "Error getting inventories sold: #{inspect(error)}"}))
+    end
+  end
+
   match _ do
     send_resp(conn, 404, "Page not found")
   end

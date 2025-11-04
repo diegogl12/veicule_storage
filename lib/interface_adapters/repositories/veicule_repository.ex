@@ -5,6 +5,7 @@ defmodule VeiculeStorage.InterfaceAdapters.Repositories.VeiculeRepository do
   alias VeiculeStorage.InterfaceAdapters.Repositories.Schemas.VeiculeSchema
   alias VeiculeStorage.Domain.Entities.Veicule
   require Logger
+  import Ecto.Query
 
   @impl true
   def get(id) do
@@ -47,6 +48,19 @@ defmodule VeiculeStorage.InterfaceAdapters.Repositories.VeiculeRepository do
         Logger.error("Error on VeiculeRepository.update: #{inspect(error)}")
         {:error, error}
     end
+  end
+
+  @impl true
+  def find_by_ids(ids) do
+    Repo.all(from v in VeiculeSchema, where: v.id in ^ids, select: v)
+    |> to_veicule_list()
+  end
+
+  defp to_veicule_list(veicules) do
+    result = veicules
+    |> Enum.map(&to_veicule/1)
+
+    {:ok, result}
   end
 
   defp to_schema(%Veicule{} = veicule) do

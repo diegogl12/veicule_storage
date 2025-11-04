@@ -1,11 +1,13 @@
 defmodule VeiculeStorage.Domain.Entities.Inventory do
-  @derive {Jason.Encoder, only: [:id, :veicule_id, :price]}
-  defstruct [:id, :veicule_id, :price]
+  alias VeiculeStorage.Domain.Entities.Veicule
+  @derive {Jason.Encoder, only: [:id, :veicule_id, :price, :veicule]}
+  defstruct [:id, :veicule_id, :price, :veicule]
 
   @type t :: %__MODULE__{
           id: String.t(),
           veicule_id: String.t(),
-          price: float()
+          price: float(),
+          veicule: Veicule.t() | nil
         }
 
   def new(attrs) do
