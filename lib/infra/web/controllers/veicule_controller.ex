@@ -1,8 +1,8 @@
 defmodule VeiculeStorage.Infra.Web.Controllers.VeiculeController do
-  require Logger
-
   alias VeiculeStorage.InterfaceAdapters.Controllers.VeiculeInternalController
   alias VeiculeStorage.InterfaceAdapters.DTOs.VeiculeDTO
+
+  require Logger
 
   @doc """
   Creates a new veicule.

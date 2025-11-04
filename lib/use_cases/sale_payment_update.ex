@@ -1,6 +1,6 @@
 defmodule VeiculeStorage.UseCases.SalePaymentUpdate do
-  alias VeiculeStorage.Domain.Entities.Sale
   alias VeiculeStorage.Domain.Entities.Payment
+  alias VeiculeStorage.Domain.Entities.Sale
 
   def execute(%Sale{} = sale, sale_repo, payment_repo) do
 

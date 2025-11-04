@@ -1,6 +1,6 @@
 defmodule VeiculeStorage.InterfaceAdapters.Controllers.VeiculeInternalController do
-  alias VeiculeStorage.InterfaceAdapters.Repositories.VeiculeRepository
   alias VeiculeStorage.InterfaceAdapters.DTOs.VeiculeDTO
+  alias VeiculeStorage.InterfaceAdapters.Repositories.VeiculeRepository
 
   def create(%VeiculeDTO{} = dto) do
     with {:ok, veicule_domain} <- VeiculeDTO.to_domain(dto),

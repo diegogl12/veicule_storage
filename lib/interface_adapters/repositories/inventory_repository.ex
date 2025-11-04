@@ -1,9 +1,10 @@
 defmodule VeiculeStorage.InterfaceAdapters.Repositories.InventoryRepository do
   @behaviour VeiculeStorage.Domain.Repositories.InventoryRepositoryBehaviour
 
+  alias VeiculeStorage.Domain.Entities.Inventory
   alias VeiculeStorage.Infra.Repo.VeiculeStorageRepo, as: Repo
   alias VeiculeStorage.InterfaceAdapters.Repositories.Schemas.InventorySchema
-  alias VeiculeStorage.Domain.Entities.Inventory
+
   require Logger
 
   @impl true

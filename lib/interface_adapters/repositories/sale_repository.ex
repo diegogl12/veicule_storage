@@ -1,9 +1,9 @@
 defmodule VeiculeStorage.InterfaceAdapters.Repositories.SaleRepository do
   @behaviour VeiculeStorage.Domain.Repositories.SaleRepositoryBehaviour
 
+  alias VeiculeStorage.Domain.Entities.Sale
   alias VeiculeStorage.Infra.Repo.VeiculeStorageRepo, as: Repo
   alias VeiculeStorage.InterfaceAdapters.Repositories.Schemas.SaleSchema
-  alias VeiculeStorage.Domain.Entities.Sale
 
   require Logger
 

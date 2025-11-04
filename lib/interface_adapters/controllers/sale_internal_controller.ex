@@ -1,13 +1,12 @@
 defmodule VeiculeStorage.InterfaceAdapters.Controllers.SaleInternalController do
-  alias VeiculeStorage.UseCases.Sell
-  alias VeiculeStorage.UseCases.SalePaymentUpdate
-
-  alias VeiculeStorage.InterfaceAdapters.DTOs.SellInputDTO
   alias VeiculeStorage.InterfaceAdapters.DTOs.SaleDTO
-  alias VeiculeStorage.InterfaceAdapters.Repositories.SaleRepository
+  alias VeiculeStorage.InterfaceAdapters.DTOs.SellInputDTO
+  alias VeiculeStorage.InterfaceAdapters.Gateways.Clients.Mercadopago
   alias VeiculeStorage.InterfaceAdapters.Repositories.InventoryRepository
   alias VeiculeStorage.InterfaceAdapters.Repositories.PaymentRepository
-  alias VeiculeStorage.InterfaceAdapters.Gateways.Clients.Mercadopago
+  alias VeiculeStorage.InterfaceAdapters.Repositories.SaleRepository
+  alias VeiculeStorage.UseCases.SalePaymentUpdate
+  alias VeiculeStorage.UseCases.Sell
 
   def sell(%SellInputDTO{} = dto) do
     with {:ok, sale} <- SellInputDTO.to_sale(dto),

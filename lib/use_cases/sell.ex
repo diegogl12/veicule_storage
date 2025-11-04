@@ -1,6 +1,6 @@
 defmodule VeiculeStorage.UseCases.Sell do
-  alias VeiculeStorage.Domain.Entities.Sale
   alias VeiculeStorage.Domain.Entities.Payment
+  alias VeiculeStorage.Domain.Entities.Sale
 
   def run(%Sale{} = sale, %Payment{} = payment, sale_repo, inventory_repo, payment_repo, payment_gateway) do
     with {:ok, _inventory} <- inventory_repo.get(sale.inventory_id),

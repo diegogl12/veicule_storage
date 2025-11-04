@@ -1,6 +1,6 @@
 defmodule VeiculeStorage.InterfaceAdapters.DTOs.SellInputDTO do
-  alias VeiculeStorage.Domain.Entities.Sale
   alias VeiculeStorage.Domain.Entities.Payment
+  alias VeiculeStorage.Domain.Entities.Sale
 
   defstruct [:inventory_id, :payment_method, :payment_value]
 

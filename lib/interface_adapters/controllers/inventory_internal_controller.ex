@@ -1,10 +1,10 @@
 defmodule VeiculeStorage.InterfaceAdapters.Controllers.InventoryInternalController do
-  alias VeiculeStorage.InterfaceAdapters.Repositories.InventoryRepository
   alias VeiculeStorage.InterfaceAdapters.DTOs.InventoryDTO
-  alias VeiculeStorage.InterfaceAdapters.Repositories.VeiculeRepository
+  alias VeiculeStorage.InterfaceAdapters.Repositories.InventoryRepository
   alias VeiculeStorage.InterfaceAdapters.Repositories.SaleRepository
-  alias VeiculeStorage.UseCases.VeiculesToSell
+  alias VeiculeStorage.InterfaceAdapters.Repositories.VeiculeRepository
   alias VeiculeStorage.UseCases.VeiculesSold
+  alias VeiculeStorage.UseCases.VeiculesToSell
 
   def create(%InventoryDTO{} = dto) do
     with {:ok, inventory_domain} <- InventoryDTO.to_domain(dto),

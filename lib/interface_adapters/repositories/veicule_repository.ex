@@ -1,11 +1,13 @@
 defmodule VeiculeStorage.InterfaceAdapters.Repositories.VeiculeRepository do
   @behaviour VeiculeStorage.Domain.Repositories.VeiculeRepositoryBehaviour
 
+  import Ecto.Query
+
+  alias VeiculeStorage.Domain.Entities.Veicule
   alias VeiculeStorage.Infra.Repo.VeiculeStorageRepo, as: Repo
   alias VeiculeStorage.InterfaceAdapters.Repositories.Schemas.VeiculeSchema
-  alias VeiculeStorage.Domain.Entities.Veicule
+
   require Logger
-  import Ecto.Query
 
   @impl true
   def get(id) do

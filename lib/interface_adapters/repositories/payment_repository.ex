@@ -1,11 +1,12 @@
 defmodule VeiculeStorage.InterfaceAdapters.Repositories.PaymentRepository do
   @behaviour VeiculeStorage.Domain.Repositories.PaymentRepositoryBehaviour
+
+  alias VeiculeStorage.Domain.Entities.Payment
+  alias VeiculeStorage.Infra.Repo.VeiculeStorageRepo, as: Repo
+  alias VeiculeStorage.InterfaceAdapters.Repositories.Schemas.PaymentSchema
+
   require Ecto.Query
   require Logger
-
-  alias VeiculeStorage.Infra.Repo.VeiculeStorageRepo, as: Repo
-  alias VeiculeStorage.Domain.Entities.Payment
-  alias VeiculeStorage.InterfaceAdapters.Repositories.Schemas.PaymentSchema
 
   @impl true
   def create(%Payment{} = payment) do

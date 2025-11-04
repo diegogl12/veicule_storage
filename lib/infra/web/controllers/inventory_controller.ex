@@ -1,8 +1,8 @@
 defmodule VeiculeStorage.Infra.Web.Controllers.InventoryController do
-  require Logger
-
   alias VeiculeStorage.InterfaceAdapters.Controllers.InventoryInternalController
   alias VeiculeStorage.InterfaceAdapters.DTOs.InventoryDTO
+
+  require Logger
 
   def create_inventory(params) do
     Logger.info("Creating inventory: #{inspect(params)}")

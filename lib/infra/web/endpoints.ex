@@ -1,10 +1,11 @@
 defmodule VeiculeStorage.Infra.Web.Endpoints do
   use Plug.Router
-  require Logger
 
-  alias VeiculeStorage.Infra.Web.Controllers.VeiculeController
   alias VeiculeStorage.Infra.Web.Controllers.InventoryController
   alias VeiculeStorage.Infra.Web.Controllers.SaleController
+  alias VeiculeStorage.Infra.Web.Controllers.VeiculeController
+
+  require Logger
 
   plug(:match)
 
