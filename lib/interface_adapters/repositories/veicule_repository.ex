@@ -53,6 +53,12 @@ defmodule VeiculeStorage.InterfaceAdapters.Repositories.VeiculeRepository do
   end
 
   @impl true
+  def get_all do
+    Repo.all(VeiculeSchema)
+    |> to_veicule_list()
+  end
+
+  @impl true
   def find_by_ids(ids) do
     Repo.all(from v in VeiculeSchema, where: v.id in ^ids, select: v)
     |> to_veicule_list()
