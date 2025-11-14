@@ -1,57 +1,70 @@
 defmodule VeiculeStorage.InterfaceAdapters.Gateways.Clients.MercadopagoTest do
-  use ExUnit.Case, async: false
-  import Mimic
+  use ExUnit.Case, async: true
 
-  alias VeiculeStorage.InterfaceAdapters.Gateways.Clients.Mercadopago
-  alias VeiculeStorage.InterfaceAdapters.DTOs.MercadopagoResponseDTO
-  alias VeiculeStorage.Domain.Entities.Checkout
   alias VeiculeStorage.Domain.Entities.Payment
-
-  setup :set_mimic_global
-  setup :verify_on_exit!
+  alias VeiculeStorage.InterfaceAdapters.Gateways.Clients.Mercadopago
 
   describe "perform_payment/1" do
     test "successfully processes a payment" do
       # Arrange
-      checkout = %Checkout{
-        order_id: "order-123",
-        amount: 100.0,
-        customer_id: "customer-456",
-        payment_method: "credit_card"
+      payment = %Payment{
+        id: "payment-uuid-123",
+        payment_method: "PIX",
+        payment_value: 85000.00,
+        status: "INITIAL"
       }
-
-      mock_uuid = "mock-payment-uuid"
-      current_time = ~N[2025-01-01 00:00:00]
-
-      # Stub UUID and NaiveDateTime
-      stub(UUID, :uuid1, fn -> mock_uuid end)
-      stub(NaiveDateTime, :utc_now, fn -> current_time end)
-
-      expected_dto = %MercadopagoResponseDTO{
-        payment_id: mock_uuid,
-        transaction_amount: checkout.amount,
-        description: "Order #{checkout.order_id}",
-        payment_date: current_time,
-        payment_method: checkout.payment_method,
-        created_at: current_time
-      }
-
-      expected_payment = %Payment{
-        order_id: checkout.order_id,
-        external_id: mock_uuid,
-        amount: checkout.amount,
-        payment_method: checkout.payment_method,
-        payment_date: current_time,
-        created_at: current_time
-      }
-
-      stub(MercadopagoResponseDTO, :to_payment, fn ^expected_dto, ^checkout -> expected_payment end)
 
       # Act
-      result = Mercadopago.perform_payment(checkout)
+      result = Mercadopago.perform_payment(payment)
 
       # Assert
-      assert {:ok, ^expected_payment} = result
+      assert {:ok, %Payment{
+        id: "payment-uuid-123",
+        payment_method: "PIX",
+        payment_value: 85000.00,
+        status: "INITIAL"
+      }} = result
+    end
+
+    test "successfully processes a payment with credit card" do
+      # Arrange
+      payment = %Payment{
+        id: "payment-uuid-456",
+        payment_method: "CREDIT_CARD",
+        payment_value: 95000.00,
+        status: "INITIAL"
+      }
+
+      # Act
+      result = Mercadopago.perform_payment(payment)
+
+      # Assert
+      assert {:ok, %Payment{
+        id: "payment-uuid-456",
+        payment_method: "CREDIT_CARD",
+        payment_value: 95000.00,
+        status: "INITIAL"
+      }} = result
+    end
+
+    test "successfully processes a payment without id" do
+      # Arrange
+      payment = %Payment{
+        payment_method: "PIX",
+        payment_value: 75000.00,
+        status: "INITIAL"
+      }
+
+      # Act
+      result = Mercadopago.perform_payment(payment)
+
+      # Assert
+      assert {:ok, %Payment{
+        id: nil,
+        payment_method: "PIX",
+        payment_value: 75000.00,
+        status: "INITIAL"
+      }} = result
     end
   end
 end

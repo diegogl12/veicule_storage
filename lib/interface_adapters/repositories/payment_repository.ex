@@ -61,6 +61,7 @@ defmodule VeiculeStorage.InterfaceAdapters.Repositories.PaymentRepository do
   defp to_payment(schema) do
     %Payment{
       id: schema.id,
+      payment_method: schema.payment_method,
       payment_value: schema.payment_value,
       status: schema.status,
       payment_date: schema.payment_date
