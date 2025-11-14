@@ -10,6 +10,17 @@ create_message:
   	--region us-east-1 \
   	--profile localstack
 
-up:
+up-compose:
 	docker-compose down -v
 	docker-compose --env-file ./.env up --build
+
+up-kube:
+	kubectl apply -f .kube/postgres-secret.yaml
+	kubectl apply -f .kube/postgres-pvc.yaml
+	kubectl apply -f .kube/postgres-deployment.yaml
+	kubectl apply -f .kube/postgres-service.yaml
+	kubectl apply -f .kube/deployment.yaml
+	kubectl apply -f .kube/service.yaml
+
+down-kube:
+	kubectl delete -f .kube/

@@ -13,7 +13,10 @@ defmodule VeiculeStorage.Application do
   defp children(:test), do: []
   defp children(_), do: [
     VeiculeStorage.Infra.Repo.VeiculeStorageRepo,
-    {Plug.Cowboy, scheme: :http, plug: VeiculeStorage.Infra.Web.Endpoints, options: [port: port()]},
+    {Plug.Cowboy, scheme: :http, plug: VeiculeStorage.Infra.Web.Endpoints, options: [
+      port: port(),
+      ip: {0, 0, 0, 0}
+    ]},
   ]
 
   defp port, do: Application.get_env(:veicule_storage, :api) |> Keyword.get(:port)
