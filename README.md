@@ -1,3 +1,4 @@
+[![Coverage Status](https://coveralls.io/repos/github/diegogl12/veicule_storage/badge.svg?branch=main)](https://coveralls.io/github/diegogl12/veicule_storage?branch=main)
 # 🚗 Veicule Storage API
 
 ## :pencil: Descrição do Projeto
