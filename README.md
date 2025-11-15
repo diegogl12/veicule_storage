@@ -246,6 +246,16 @@ lib/
         └── schema.ex                # Schema base
 ```
 
+### 🎯 Princípios SOLID Aplicados
+
+| Sigla | Princípio | Aplicação no Projeto |
+|-------|-----------|---------------------|
+| **S** | Single Responsibility | Cada Use Case tem uma única responsabilidade (ex: `Sell.ex` apenas processa vendas) |
+| **O** | Open/Closed | Behaviours permitem extensão sem modificação (ex: `PaymentGatewayBehaviour` aceita novos gateways) |
+| **L** | Liskov Substitution | Implementações de repositórios são intercambiáveis via Behaviours (ex: trocar `VeiculeRepository` por mock em testes) |
+| **I** | Interface Segregation | Behaviours específicos por domínio (ex: `VeiculeRepositoryBehaviour` só com métodos de veículos) |
+| **D** | Dependency Inversion | Use Cases dependem de abstrações (Behaviours), não de implementações concretas (ex: `Sell` recebe behaviour, não Ecto) |
+
 ## 🧪 Testes
 
 ```bash
